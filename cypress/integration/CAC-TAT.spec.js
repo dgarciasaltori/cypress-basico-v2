@@ -73,34 +73,35 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.fillMandatoryFieldsAndSubmit()
     cy.get('.success').should('be.visible')
   })
-  it('seleciona um produto (YouTube) por seu texto', () => {
-    cy.get('select').select('YouTube')
+  it.only('seleciona um produto (YouTube) por seu texto', () => {
+    cy.get('#product').select('YouTube')
       .should('have.value', 'youtube')
   })
-  it('seleciona um produto (Mentoria) por seu valor (value)', () => {
-    cy.get('select').select('mentoria')
+  it.only('seleciona um produto (Mentoria) por seu valor (value)', () => {
+    cy.get('#product').select('mentoria')
       .should('have.value', 'mentoria')
   })
-  it('seleciona um produto (Blog) por seu índice', () => {
-    cy.get('select').select(1)
+  it.only('seleciona um produto (Blog) por seu índice', () => {
+    cy.get('#product').select(1)
       .should('have.value', 'blog')
   })
-  it('selecionar texto aleatório', () => {
-    cy.get('select option')
-      .as('options')
-      .its('length', { log: false }).then(n => {
-        cy.get('@options', { log: false }).then($options => {
-          const randomOptionIndex = Cypress._.random(n - 1)
-          const randomOptionText = $options[randomOptionIndex].innerText
-          cy.get('select').select(randomOptionText)
-        })
-      })
-  })
-  it.only('selecionar texto aleatório', () => {
-    cy.get('select option')
-      .its('length', { log: false }).then(n => {
-        cy.get('select').select(Cypress._.random(n - 1))
-      })
-  })
+  // it('selecionar texto aleatório', () => {
+  //   cy.get('select option')
+  //     .as('options')
+  //     .its('length', { log: false }).then(n => {
+  //       cy.get('@options', { log: false }).then($options => {
+  //         const randomOptionIndex = Cypress._.random(n - 1)
+  //         const randomOptionText = $options[randomOptionIndex].innerText
+  //         cy.get('select').select(randomOptionText)
+  //       })
+  //     })
+  // })
+  // it('selecionar texto aleatório', () => {
+  //   cy.get('select option')
+  //     .its('length', { log: false }).then(n => {
+  //       cy.get('select').select(Cypress._.random(n - 1))
+  //     })
+  // })
+  
 })
 
