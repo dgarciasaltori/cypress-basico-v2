@@ -36,7 +36,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('#firstName').type('Diego')
     cy.get('#lastName').type('Saltori')
     cy.get('#email').type('diego@exemplo.com')
-    cy.get('#phone-checkbox').click()
+    cy.get('#phone-checkbox').check()
     cy.get('#open-text-area').type('Teste')
     cy.contains('button', 'Enviar').click()
 
@@ -73,35 +73,114 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.fillMandatoryFieldsAndSubmit()
     cy.get('.success').should('be.visible')
   })
-  it.only('seleciona um produto (YouTube) por seu texto', () => {
+  it('seleciona um produto (YouTube) por seu texto', () => {
     cy.get('#product').select('YouTube')
       .should('have.value', 'youtube')
   })
-  it.only('seleciona um produto (Mentoria) por seu valor (value)', () => {
+  it('seleciona um produto (Mentoria) por seu valor (value)', () => {
     cy.get('#product').select('mentoria')
       .should('have.value', 'mentoria')
   })
-  it.only('seleciona um produto (Blog) por seu índice', () => {
+  it('seleciona um produto (Blog) por seu índice', () => {
     cy.get('#product').select(1)
       .should('have.value', 'blog')
   })
-  // it('selecionar texto aleatório', () => {
+  // it.only('selecionar texto aleatório', () => {
   //   cy.get('select option')
   //     .as('options')
   //     .its('length', { log: false }).then(n => {
   //       cy.get('@options', { log: false }).then($options => {
-  //         const randomOptionIndex = Cypress._.random(n - 1)
+  //         const randomOptionIndex = Cypress._.random(n)
   //         const randomOptionText = $options[randomOptionIndex].innerText
   //         cy.get('select').select(randomOptionText)
   //       })
   //     })
   // })
-  // it('selecionar texto aleatório', () => {
+  // it.only('selecionar texto aleatório', () => {
   //   cy.get('select option')
   //     .its('length', { log: false }).then(n => {
-  //       cy.get('select').select(Cypress._.random(n - 1))
+  //       cy.get('select').select(Cypress._.random(n))
   //     })
   // })
-  
+  it('marca o tipo de atendimento "Feedback"', () => {
+    cy.get('input[type="radio"][value="feedback"]')
+      .check()
+      .should('have.value', 'feedback')
+  })
+  it('marca cada tipo de atendimento', () => {
+    cy.get('input[type="radio"][value="ajuda"]')
+      .check()
+      .should('have.value', 'ajuda')
+    cy.get('input[type="radio"][value="feedback"]')
+      .check()
+      .should('have.value', 'feedback')
+    cy.get('input[type="radio"][value="elogio"]')
+      .check()
+      .should('have.value', 'elogio')
+  })
+  it('marca cada tipo de atendimento', () => {
+    cy.get('input[type="radio"]')
+      .check()
+      .should('have.length', 3)
+      .each(function($radio) {
+        cy.wrap($radio).check()
+        cy.wrap($radio).should('be.checked')
+      })
+  })
+  it('marca ambos checkboxes, depois desmarca o último', () => {
+    cy.get('input[type="checkbox"][value="email"')
+      .check()
+      .should('be.checked')
+    cy.get('input[type="checkbox"][value="phone"')
+      .check()
+      .should('be.checked')
+    cy.get('input[type="checkbox"][value="phone"]')
+      .uncheck()
+  })
+  it('marca ambos checkboxes, depois desmarca o último', () => {
+    cy.get('input[type="checkbox"]')
+      .check()
+      .should('be.checked')
+      .last()
+      .uncheck()
+      .should('not.be.checked')
+  })
+  it('seleciona um arquivo da pasta fixtures', () => {
+    cy.get('input[type="file"]')
+      .should('not.have.value')
+      .selectFile('./cypress/fixtures/40bf5022f099e7030c11e17e50f4b3da.png')
+      .should(function($input) {
+        expect($input[0].files[0].name).to.equal('40bf5022f099e7030c11e17e50f4b3da.png')
+      })
+  })
+  it('seleciona um arquivo simulando um drag-and-drop', () => {
+    cy.get('input[type="file"]')
+      .should('not.have.value')
+      .selectFile('./cypress/fixtures/40bf5022f099e7030c11e17e50f4b3da.png', {action: 'drag-drop'})
+      .should(function($input) {
+        expect($input[0].files[0].name).to.equal('40bf5022f099e7030c11e17e50f4b3da.png')
+      })    
+  })
+  it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+    cy.fixture('example.json').as('sampleFile')
+    cy.get('input[type="file"]')
+      .selectFile('@sampleFile')
+      .should(function($input) {
+        expect($input[0].files[0].name).to.equal('example.json')
+      }) 
+  })
+  it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', () => {
+    cy.get('#privacy a').should('have.attr', 'target', '_blank')
+  })
+  it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
+    cy.get('#privacy a')
+      .invoke('removeAttr', 'target')
+      .click()
+    cy.contains('Talking About Testing').should('be.visible')
+  })
+  it('testa a página da política de privacidade de forma independente', () => {
+    cy.visit('./src/privacy.html')
+    cy.get('#title').should('be.visible')
+  })
 })
 
