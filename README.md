@@ -7,7 +7,7 @@ Projeto para estudo de Cypress Básico v2 da escola Talking About Testing.
 Necessário ter instalado as dependencias e bibliotecas:
 Node.js, npm, Cypress e Git para rodar o projeto .
 
-> Uso as versões: `v18.16.1` and `9.5.1` do Node.js e npm. Para Cypress '9.5.1' e Git '2.40.0.windows.1'. Sugiro que utilize as mesmas versões ou mais recentes.
+> Uso as versões: `v18.16.1` and `9.5.1` do Node.js e npm. Para Cypress `9.5.1` e Git `2.40.0.windows.1`. Sugiro que utilize as mesmas versões ou mais recentes.
 
 ## Instalação
 
